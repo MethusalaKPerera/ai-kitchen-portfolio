@@ -1,0 +1,253 @@
+/* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+/* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* END TAILWIND IMPORTS — ALL OTHER CSS MUST GO BELOW THIS LINE */
+
+/* ──────────────── GLOBAL BASE ──────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-[#0f172a] text-slate-200 font-inter antialiased;
+    background: radial-gradient(ellipse at top, #0c1628 0%, #0f172a 60%);
+    min-height: 100vh;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-outfit font-bold tracking-tight;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0f172a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #14b8a6, #0891b2);
+    border-radius: 3px;
+  }
+  ::selection {
+    background: rgba(20,184,166,0.3);
+    color: #fff;
+  }
+}
+
+/* ──────────────── UTILITIES ──────────────── */
+@layer utilities {
+  /* Glassmorphism */
+  .glass {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .glass-dark {
+    background: rgba(2,6,23,0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  /* Text gradients */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #14b8a6, #06b6d4);
+  }
+  .text-gradient-purple {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #818cf8, #a78bfa);
+  }
+
+  /* Glows */
+  .glow-teal {
+    box-shadow: 0 0 30px rgba(20,184,166,0.35);
+  }
+  .glow-teal-sm {
+    box-shadow: 0 0 16px rgba(20,184,166,0.25);
+  }
+  .glow-purple {
+    box-shadow: 0 0 30px rgba(139,92,246,0.35);
+  }
+
+  /* 3D card preserve */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .perspective-800 {
+    perspective: 800px;
+  }
+  .perspective-1200 {
+    perspective: 1200px;
+  }
+}
+
+/* ──────────────── ANIMATIONS ──────────────── */
+
+/* Shimmer sweep */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Floating up/down */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-14px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-float-delay {
+  animation: float 5s ease-in-out infinite 1.5s;
+}
+
+/* Slow spin */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Orbit */
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(90px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(90px) rotate(-360deg); }
+}
+.animate-orbit {
+  animation: orbit 8s linear infinite;
+}
+
+/* Pulsing glow ring */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(20,184,166,0.5); }
+  70%  { box-shadow: 0 0 0 16px rgba(20,184,166,0); }
+  100% { box-shadow: 0 0 0 0 rgba(20,184,166,0); }
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2.5s cubic-bezier(0.215,0.61,0.355,1) infinite;
+}
+
+/* Gradient border rotation */
+@keyframes rotate-gradient {
+  from { --gradient-angle: 0deg; }
+  to   { --gradient-angle: 360deg; }
+}
+
+/* Scanline overlay for hero */
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Fade up (used for page transitions) */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+/* Neon text flicker */
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 0 0 10px #14b8a6, 0 0 20px #14b8a6, 0 0 40px #14b8a6;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+/* Gradient text flow */
+@keyframes gradient-flow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+  background-size: 300% 300%;
+  animation: gradient-flow 5s ease infinite;
+}
+
+/* Breathe scale */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50%       { transform: scale(1.05); opacity: 1; }
+}
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* Slide in from left */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-left {
+  animation: slideInLeft 0.5s ease-out forwards;
+}
+
+/* ──────────────── CARD HOVER 3D ──────────────── */
+.card-3d {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+.card-3d:hover {
+  transform: perspective(800px) rotateX(4deg) rotateY(-4deg) translateZ(10px);
+}
+
+/* ──────────────── CUSTOM BUTTON ──────────────── */
+.btn-primary {
+  @apply px-8 py-4 rounded-2xl font-semibold text-white transition-all duration-300 inline-flex items-center gap-2;
+  background: linear-gradient(135deg, #14b8a6, #06b6d4);
+  box-shadow: 0 0 24px rgba(20,184,166,0.4);
+}
+.btn-primary:hover {
+  box-shadow: 0 0 40px rgba(20,184,166,0.6);
+  transform: translateY(-2px);
+}
+.btn-outline {
+  @apply px-8 py-4 rounded-2xl font-semibold text-slate-300 border border-white/15 transition-all duration-300 inline-flex items-center gap-2;
+}
+.btn-outline:hover {
+  @apply border-teal-500/50 text-white bg-white/5;
+}
+
+/* ──────────────── DARK BACKGROUND SECTIONS ──────────────── */
+.bg-dark-section {
+  background: linear-gradient(135deg, #0f172a 0%, #0c1628 50%, #0f172a 100%);
+}
+.bg-dark-deeper {
+  background: linear-gradient(180deg, #0c1628, #0f172a);
+}
+
+/* ──────────────── PROGRESS BAR ──────────────── */
+.progress-bar {
+  @apply h-2 rounded-full overflow-hidden bg-white/5;
+}
+.progress-fill {
+  @apply h-full rounded-full;
+  background: linear-gradient(90deg, #14b8a6, #06b6d4);
+  box-shadow: 0 0 12px rgba(20,184,166,0.5);
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ──────────────── PDF IFRAME ──────────────── */
+iframe {
+  border: none;
+}
