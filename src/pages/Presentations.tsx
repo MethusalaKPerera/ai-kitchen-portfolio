@@ -39,8 +39,8 @@ const presentations: PresentationItem[] = [
     date: 'January 04, 2026',
     desc: 'Mid-project demonstration of core AI modules — ingredient recognition prototype, RAG system with 190 authentic recipes, and Sentence-BERT embeddings for semantic matching.',
     status: 'completed',
-    fileName: undefined,
-    fileType: undefined,
+    fileName: 'Presentation 1.pdf',
+    fileType: 'pdf',
     gradient: 'from-teal-500 via-cyan-500 to-sky-600',
     glowColor: 'rgba(20,184,166,0.35)',
     tag: 'PP-1 (50%)',
@@ -95,7 +95,7 @@ export function Presentations() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-16">
             {[
               { label: 'Total Presentations', value: '4' },
-              { label: 'Slides Available', value: '2' },
+              { label: 'Slides Available', value: '3' },
               { label: 'Marks Coverage', value: '49%' },
               { label: 'Status', value: '3/4 Done' },
             ].map((s, i) => (
@@ -123,14 +123,18 @@ export function Presentations() {
                 className="relative bg-gradient-to-br from-slate-800/70 to-slate-900/70 border border-white/10 rounded-3xl overflow-hidden group transition-all duration-300 h-full flex flex-col"
               >
                 {/* Thumbnail area */}
-                <div className={`relative h-48 bg-gradient-to-br ${pres.gradient} overflow-hidden shrink-0`}
-                  style={{ boxShadow: `inset 0 -40px 60px rgba(15,23,42,0.8)` }}>
+                <div
+                  className={`relative h-48 bg-gradient-to-br ${pres.gradient} overflow-hidden shrink-0`}
+                  style={{ boxShadow: `inset 0 -40px 60px rgba(15,23,42,0.8)` }}
+                >
                   {/* Animated grid */}
-                  <div className="absolute inset-0"
+                  <div
+                    className="absolute inset-0"
                     style={{
                       backgroundImage: `linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)`,
                       backgroundSize: '30px 30px',
-                    }} />
+                    }}
+                  />
                   {/* Floating orbs */}
                   <motion.div
                     animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
@@ -149,10 +153,12 @@ export function Presentations() {
 
                   {/* Status badge */}
                   <div className="absolute top-4 left-4">
-                    <span className={`text-xs font-bold px-3 py-1.5 rounded-full border ${pres.status === 'completed'
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                      : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                    }`}>
+                    <span
+                      className={`text-xs font-bold px-3 py-1.5 rounded-full border ${pres.status === 'completed'
+                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                          : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                        }`}
+                    >
                       {pres.status === 'completed' ? '✓ Completed' : '⏳ Upcoming'}
                     </span>
                   </div>
@@ -170,9 +176,13 @@ export function Presentations() {
                   <div className="flex items-center gap-2 mb-3 shrink-0">
                     <Calendar className="w-4 h-4 text-slate-400" />
                     <span className="text-sm text-slate-400">{pres.date}</span>
-                    <span className="ml-auto text-xs font-bold px-2 py-0.5 rounded bg-white/10 text-slate-300 border border-white/10">{pres.tag}</span>
+                    <span className="ml-auto text-xs font-bold px-2 py-0.5 rounded bg-white/10 text-slate-300 border border-white/10">
+                      {pres.tag}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-outfit font-bold text-white mb-3 group-hover:text-teal-300 transition-colors shrink-0">{pres.title}</h3>
+                  <h3 className="text-xl font-outfit font-bold text-white mb-3 group-hover:text-teal-300 transition-colors shrink-0">
+                    {pres.title}
+                  </h3>
                   <p className="text-sm text-slate-400 leading-relaxed mb-5 flex-grow">{pres.desc}</p>
 
                   {/* Action buttons */}
@@ -180,7 +190,12 @@ export function Presentations() {
                     <div className="flex gap-3">
                       {pres.fileType === 'pdf' && (
                         <button
-                          onClick={() => setPdfPreview({ url: `/pdf/${encodeURIComponent(pres.fileName!)}`, title: pres.title })}
+                          onClick={() =>
+                            setPdfPreview({
+                              url: `/pdf/${encodeURIComponent(pres.fileName!)}`,
+                              title: pres.title,
+                            })
+                          }
                           className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 hover:bg-teal-500/15 border border-white/10 hover:border-teal-500/40 text-slate-300 hover:text-teal-300 text-sm font-medium transition-all duration-200"
                         >
                           <Eye className="w-4 h-4" /> Preview
@@ -202,7 +217,9 @@ export function Presentations() {
                     </div>
                   ) : (
                     <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-500 text-sm">
-                      {pres.status === 'completed' ? 'Slides not yet uploaded' : 'Slides will be uploaded after presentation'}
+                      {pres.status === 'completed'
+                        ? 'Slides not yet uploaded'
+                        : 'Slides will be uploaded after presentation'}
                     </div>
                   )}
                 </div>

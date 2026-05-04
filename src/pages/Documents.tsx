@@ -7,7 +7,7 @@ import { Download, Eye, FileText, BarChart2, FileCheck, User, ShieldCheck } from
 
 interface PDFDoc {
   title: string;
-  type: 'proposal' | 'data-analysis' | 'checklist';
+  type: 'proposal' | 'data-analysis' | 'checklist' | 'final';
   fileName: string;
   member?: string;
   memberId?: string;
@@ -36,6 +36,12 @@ const members = [
         fileName: 'Data_Analysis_Report_IT22131942-updated_v2 (1) (2).pdf',
         desc: 'Comprehensive data analysis for the Cooking Assistant module including dataset exploration, model evaluation metrics, and findings.',
       },
+      {
+        title: 'Final Report',
+        type: 'final' as const,
+        fileName: 'Final Report_IT22131942 Perera U.M.K..pdf',
+        desc: 'Individual final research report detailing the complete implementation, results, and conclusions for the Spontaneous Cooking Assistant module.',
+      },
     ],
   },
   {
@@ -57,6 +63,12 @@ const members = [
         type: 'data-analysis' as const,
         fileName: 'Data Analysis Report_IT22083982docx (1).pdf',
         desc: 'In-depth data analysis for nutritional guidance including temporal intake patterns, deficiency prediction model performance.',
+      },
+      {
+        title: 'Final Report',
+        type: 'final' as const,
+        fileName: 'IT22083982_Final Report.pdf',
+        desc: 'Individual final research report detailing the complete implementation, results, and conclusions for the Nutritional Guidance System module.',
       },
     ],
   },
@@ -80,6 +92,12 @@ const members = [
         fileName: 'Data Analysis Report_IT22117946 (1).pdf',
         desc: 'Analysis of shopping behavior patterns, NLP intent classification performance, and recommendation accuracy metrics.',
       },
+      {
+        title: 'Final Report',
+        type: 'final' as const,
+        fileName: 'Individual Final Report_IT22117946.pdf',
+        desc: 'Individual final research report detailing the complete implementation, results, and conclusions for the AI Shopping Agent module.',
+      },
     ],
   },
   {
@@ -102,11 +120,23 @@ const members = [
         fileName: 'Data Analysis Report_IT22339010NEW.pdf',
         desc: 'Detailed analysis of expiry prediction model results, feature importance analysis, and real-world dataset evaluation.',
       },
+      {
+        title: 'Final Report',
+        type: 'final' as const,
+        fileName: 'IT22339010_SummaryReport.pdf',
+        desc: 'Individual final research report detailing the complete implementation, results, and conclusions for the AI Behavioral Food Expiry Predictor module.',
+      },
     ],
   },
 ];
 
 const additionalDocs = [
+  {
+    title: 'Group Final Report',
+    type: 'final' as const,
+    fileName: 'Final Report_24-26J – 351.pdf',
+    desc: 'Complete group final research report for the AI Kitchen Ecosystem — covers all four modules, integrated system architecture, overall results, and conclusions.',
+  },
   {
     title: 'TAF Assessment Form',
     type: 'checklist' as const,
@@ -119,6 +149,7 @@ const typeConfig = {
   proposal: { icon: FileText, label: 'Proposal Report', bg: 'bg-violet-500/15', text: 'text-violet-300', border: 'border-violet-500/30' },
   'data-analysis': { icon: BarChart2, label: 'Data Analysis', bg: 'bg-teal-500/15', text: 'text-teal-300', border: 'border-teal-500/30' },
   checklist: { icon: FileCheck, label: 'Official Form', bg: 'bg-amber-500/15', text: 'text-amber-300', border: 'border-amber-500/30' },
+  final: { icon: FileCheck, label: 'Final Report', bg: 'bg-rose-500/15', text: 'text-rose-300', border: 'border-rose-500/30' },
 };
 
 function DocCard({
@@ -181,22 +212,22 @@ function DocCard({
             <button
               onClick={onPreview}
               id={`preview-${fileName.replace(/[^a-z0-9]/gi, '-')}`}
-              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-white/5 hover:bg-teal-500/20 border border-white/10 hover:border-teal-500/40 text-slate-300 hover:text-teal-300 text-sm font-medium transition-all duration-200"
+              className="flex-1 flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-teal-500/20 border border-white/10 hover:border-teal-500/40 text-slate-300 hover:text-teal-300 text-xs sm:text-sm font-medium transition-all duration-200"
             >
-              <Eye className="w-4 h-4" /> Preview
+              <Eye className="w-4 h-4 shrink-0" /> <span className="truncate">Preview</span>
             </button>
             <a
               href={`/pdf/${encodeURIComponent(fileName)}`}
               download={fileName}
               id={`download-${fileName.replace(/[^a-z0-9]/gi, '-')}`}
-              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 border border-teal-500/30 hover:border-teal-400 text-teal-300 hover:text-teal-200 text-sm font-medium transition-all duration-200 hover:shadow-[0_0_20px_rgba(20,184,166,0.25)]"
+              className="flex-1 flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 border border-teal-500/30 hover:border-teal-400 text-teal-300 hover:text-teal-200 text-xs sm:text-sm font-medium transition-all duration-200 hover:shadow-[0_0_20px_rgba(20,184,166,0.25)]"
             >
-              <Download className="w-4 h-4" /> Download
+              <Download className="w-4 h-4 shrink-0" /> <span className="truncate">Download</span>
             </a>
           </div>
         </div>
       </motion.div>
-    </ScrollReveal>
+    </ScrollReveal >
   );
 }
 
@@ -223,8 +254,10 @@ export function Documents() {
             <div className="mb-16">
               {/* Member header */}
               <div className="flex items-center gap-4 mb-8">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${member.color} flex items-center justify-center shadow-lg shrink-0`}
-                  style={{ boxShadow: `0 8px 32px ${member.glowColor}` }}>
+                <div
+                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${member.color} flex items-center justify-center shadow-lg shrink-0`}
+                  style={{ boxShadow: `0 8px 32px ${member.glowColor}` }}
+                >
                   <span className="text-lg font-outfit font-bold text-white">{member.initials}</span>
                 </div>
                 <div>
@@ -238,7 +271,7 @@ export function Documents() {
                 <div className={`ml-auto hidden sm:block h-px flex-1 bg-gradient-to-r ${member.color} opacity-30`} />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {member.docs.map((doc, di) => (
                   <DocCard
                     key={di}
