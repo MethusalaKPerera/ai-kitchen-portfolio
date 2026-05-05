@@ -62,11 +62,11 @@ const presentations: PresentationItem[] = [
   {
     id: 4,
     title: 'Final Presentation',
-    date: 'September 2026',
-    desc: 'Complete research showcase — final performance metrics, real-world evaluation results, user study analysis, ablation studies, and comprehensive conclusions.',
-    status: 'upcoming',
-    fileName: undefined,
-    fileType: undefined,
+    date: 'May 2026',
+    desc: 'Complete research showcase — final performance metrics, real-world evaluation results, user study analysis, ablation studies, and comprehensive conclusions for all four AI modules.',
+    status: 'completed',
+    fileName: 'FinalPresentation_351.pptx',
+    fileType: 'pptx',
     gradient: 'from-amber-500 via-orange-500 to-rose-500',
     glowColor: 'rgba(251,191,36,0.35)',
     tag: 'Final',
@@ -90,14 +90,13 @@ export function Presentations() {
       />
 
       <div className="container mx-auto px-4 md:px-6 mt-16">
-        {/* Stats bar */}
         <ScrollReveal>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-16">
             {[
               { label: 'Total Presentations', value: '4' },
-              { label: 'Slides Available', value: '3' },
+              { label: 'Slides Available', value: '4' },
               { label: 'Marks Coverage', value: '49%' },
-              { label: 'Status', value: '3/4 Done' },
+              { label: 'Status', value: '4/4 Done' },
             ].map((s, i) => (
               <motion.div
                 key={i}
@@ -113,7 +112,6 @@ export function Presentations() {
           </div>
         </ScrollReveal>
 
-        {/* Presentations grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {presentations.map((pres, idx) => (
             <ScrollReveal key={pres.id} delay={idx * 0.1} className="h-full">
@@ -122,12 +120,10 @@ export function Presentations() {
                 style={{ perspective: '900px', transformStyle: 'preserve-3d' }}
                 className="relative bg-gradient-to-br from-slate-800/70 to-slate-900/70 border border-white/10 rounded-3xl overflow-hidden group transition-all duration-300 h-full flex flex-col"
               >
-                {/* Thumbnail area */}
                 <div
                   className={`relative h-48 bg-gradient-to-br ${pres.gradient} overflow-hidden shrink-0`}
                   style={{ boxShadow: `inset 0 -40px 60px rgba(15,23,42,0.8)` }}
                 >
-                  {/* Animated grid */}
                   <div
                     className="absolute inset-0"
                     style={{
@@ -135,7 +131,6 @@ export function Presentations() {
                       backgroundSize: '30px 30px',
                     }}
                   />
-                  {/* Floating orbs */}
                   <motion.div
                     animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
@@ -151,7 +146,6 @@ export function Presentations() {
                     <Play className="w-4 h-4 text-white/60" />
                   </motion.div>
 
-                  {/* Status badge */}
                   <div className="absolute top-4 left-4">
                     <span
                       className={`text-xs font-bold px-3 py-1.5 rounded-full border ${pres.status === 'completed'
@@ -163,7 +157,6 @@ export function Presentations() {
                     </span>
                   </div>
 
-                  {/* Marks badge */}
                   <div className="absolute bottom-4 right-4">
                     <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-black/30 text-white/80 border border-white/10 backdrop-blur-sm">
                       {pres.marks} marks
@@ -171,7 +164,6 @@ export function Presentations() {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex items-center gap-2 mb-3 shrink-0">
                     <Calendar className="w-4 h-4 text-slate-400" />
@@ -185,16 +177,12 @@ export function Presentations() {
                   </h3>
                   <p className="text-sm text-slate-400 leading-relaxed mb-5 flex-grow">{pres.desc}</p>
 
-                  {/* Action buttons */}
                   {pres.fileName ? (
                     <div className="flex gap-3">
                       {pres.fileType === 'pdf' && (
                         <button
                           onClick={() =>
-                            setPdfPreview({
-                              url: `/pdf/${encodeURIComponent(pres.fileName!)}`,
-                              title: pres.title,
-                            })
+                            setPdfPreview({ url: `/pdf/${encodeURIComponent(pres.fileName!)}`, title: pres.title })
                           }
                           className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 hover:bg-teal-500/15 border border-white/10 hover:border-teal-500/40 text-slate-300 hover:text-teal-300 text-sm font-medium transition-all duration-200"
                         >
@@ -209,7 +197,6 @@ export function Presentations() {
                       <a
                         href={`/pdf/${encodeURIComponent(pres.fileName)}`}
                         download={pres.fileName}
-                        id={`pres-download-${pres.id}`}
                         className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-teal-500/25 to-cyan-500/25 hover:from-teal-500/40 hover:to-cyan-500/40 border border-teal-500/30 text-teal-300 text-sm font-medium transition-all duration-200 hover:shadow-[0_0_24px_rgba(20,184,166,0.3)]"
                       >
                         <Download className="w-4 h-4" /> Download
@@ -217,9 +204,7 @@ export function Presentations() {
                     </div>
                   ) : (
                     <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-500 text-sm">
-                      {pres.status === 'completed'
-                        ? 'Slides not yet uploaded'
-                        : 'Slides will be uploaded after presentation'}
+                      Slides will be uploaded after presentation
                     </div>
                   )}
                 </div>

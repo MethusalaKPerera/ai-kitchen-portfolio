@@ -44,7 +44,6 @@ function InputField({
   placeholder,
   value,
   onChange,
-  required = true,
 }: {
   label: string;
   id: string;
@@ -52,7 +51,6 @@ function InputField({
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
 }) {
   const [focused, setFocused] = useState(false);
   return (
@@ -60,25 +58,23 @@ function InputField({
       <label htmlFor={id} className="block text-sm font-medium text-slate-400">
         {label}
       </label>
-      <div className="relative">
-        <input
-          type={type}
-          id={id}
-          name={id}
-          required={required}
-          value={value}
-          onChange={onChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          placeholder={placeholder}
-          className="w-full px-4 py-3 rounded-2xl text-white placeholder-slate-600 text-sm transition-all outline-none"
-          style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: `1px solid ${focused ? 'rgba(20,184,166,0.5)' : 'rgba(255,255,255,0.08)'}`,
-            boxShadow: focused ? '0 0 0 3px rgba(20,184,166,0.1)' : 'none',
-          }}
-        />
-      </div>
+      <input
+        type={type}
+        id={id}
+        name={id}
+        required
+        value={value}
+        onChange={onChange}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        placeholder={placeholder}
+        className="w-full px-4 py-3 rounded-2xl text-white placeholder-slate-600 text-sm transition-all outline-none"
+        style={{
+          background: 'rgba(255,255,255,0.04)',
+          border: `1px solid ${focused ? 'rgba(20,184,166,0.5)' : 'rgba(255,255,255,0.08)'}`,
+          boxShadow: focused ? '0 0 0 3px rgba(20,184,166,0.1)' : 'none',
+        }}
+      />
     </div>
   );
 }
@@ -95,13 +91,24 @@ export function ContactUs() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+
     setIsSubmitting(true);
+
+    // Build mailto link — opens user's default email client
+    const to = 'it22131942@my.sliit.lk';
+    const subject = encodeURIComponent(`Inquiry — AI Kitchen Ecosystem from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    );
+    window.open(`mailto:${to}?subject=${subject}&body=${body}`, '_blank');
+
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
       setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setIsSuccess(false), 5000);
-    }, 1500);
+      setTimeout(() => setIsSuccess(false), 6000);
+    }, 600);
   };
 
   return (
@@ -126,11 +133,14 @@ export function ContactUs() {
                 className="relative rounded-3xl overflow-hidden border border-white/8 p-8 md:p-10"
                 style={{ background: 'linear-gradient(135deg, rgba(30,41,59,0.7), rgba(15,23,42,0.9))' }}
               >
-                {/* Top accent */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/50 to-transparent" />
-                {/* Corner glow */}
-                <div className="absolute top-0 right-0 w-48 h-48 pointer-events-none"
-                  style={{ background: 'radial-gradient(circle at top right, rgba(20,184,166,0.08), transparent)', filter: 'blur(30px)' }} />
+                <div
+                  className="absolute top-0 right-0 w-48 h-48 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle at top right, rgba(20,184,166,0.08), transparent)',
+                    filter: 'blur(30px)',
+                  }}
+                />
 
                 {/* Success overlay */}
                 <AnimatePresence>
@@ -147,12 +157,17 @@ export function ContactUs() {
                         animate={{ scale: 1 }}
                         transition={{ type: 'spring', stiffness: 300, delay: 0.1 }}
                         className="w-20 h-20 rounded-2xl flex items-center justify-center mb-5 shadow-2xl"
-                        style={{ background: 'linear-gradient(135deg, #14b8a6, #06b6d4)', boxShadow: '0 0 40px rgba(20,184,166,0.5)' }}
+                        style={{
+                          background: 'linear-gradient(135deg, #14b8a6, #06b6d4)',
+                          boxShadow: '0 0 40px rgba(20,184,166,0.5)',
+                        }}
                       >
                         <CheckCircle2 className="w-10 h-10 text-white" />
                       </motion.div>
-                      <h3 className="text-2xl font-outfit font-bold text-white mb-2">Message Sent!</h3>
-                      <p className="text-slate-400">Thank you for reaching out. We'll get back to you shortly.</p>
+                      <h3 className="text-2xl font-outfit font-bold text-white mb-2">Email Client Opened!</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
+                        Your default email app has opened with your message pre-filled. Just hit Send to reach the team directly.
+                      </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -162,7 +177,7 @@ export function ContactUs() {
                   <h2 className="text-2xl font-outfit font-bold text-white">Send a Message</h2>
                 </div>
                 <p className="text-sm text-slate-500 mb-8">
-                  Use subject <span className="italic text-slate-400">"Inquiry — AI Kitchen Ecosystem"</span> for faster response.
+                  Clicking <span className="italic text-slate-400">"Send Message"</span> will open your email client with your message pre-filled — ready to send directly to the team.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -185,7 +200,9 @@ export function ContactUs() {
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="message" className="block text-sm font-medium text-slate-400">Message</label>
+                    <label htmlFor="message" className="block text-sm font-medium text-slate-400">
+                      Message
+                    </label>
                     <textarea
                       id="message"
                       name="message"
@@ -231,7 +248,6 @@ export function ContactUs() {
 
           {/* ── RIGHT: Info & Team Emails ── */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Contact info cards */}
             {contactInfo.map((info, i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
                 <motion.div
@@ -253,7 +269,6 @@ export function ContactUs() {
               </ScrollReveal>
             ))}
 
-            {/* Team emails */}
             <ScrollReveal delay={0.3}>
               <div
                 className="rounded-3xl border border-white/8 p-6"
@@ -271,12 +286,18 @@ export function ContactUs() {
                       whileHover={{ x: 4 }}
                       className="flex items-center gap-3 group"
                     >
-                      <div className={`w-8 h-8 shrink-0 rounded-lg bg-gradient-to-br ${m.gradient} flex items-center justify-center text-xs font-bold text-white shadow-md`}>
+                      <div
+                        className={`w-8 h-8 shrink-0 rounded-lg bg-gradient-to-br ${m.gradient} flex items-center justify-center text-xs font-bold text-white shadow-md`}
+                      >
                         {m.initials}
                       </div>
                       <div className="min-w-0">
-                        <div className="text-xs text-slate-400 group-hover:text-white transition-colors truncate font-medium">{m.name}</div>
-                        <div className="text-xs text-slate-600 group-hover:text-teal-400 transition-colors truncate font-mono">{m.email}</div>
+                        <div className="text-xs text-slate-400 group-hover:text-white transition-colors truncate font-medium">
+                          {m.name}
+                        </div>
+                        <div className="text-xs text-slate-600 group-hover:text-teal-400 transition-colors truncate font-mono">
+                          {m.email}
+                        </div>
                       </div>
                       <Mail className="w-3.5 h-3.5 text-slate-600 group-hover:text-teal-400 transition-colors ml-auto shrink-0" />
                     </motion.a>
@@ -285,7 +306,6 @@ export function ContactUs() {
               </div>
             </ScrollReveal>
 
-            {/* Info note */}
             <ScrollReveal delay={0.4}>
               <div
                 className="flex gap-3 p-4 rounded-2xl border border-sky-500/20"
@@ -294,9 +314,15 @@ export function ContactUs() {
                 <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
                 <p className="text-xs text-slate-500 leading-relaxed">
                   This is a research project website. For official inquiries about SLIIT please visit{' '}
-                  <a href="https://www.sliit.lk" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline">
+                  <a
+                    href="https://www.sliit.lk"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sky-400 hover:underline"
+                  >
                     sliit.lk
-                  </a>.
+                  </a>
+                  .
                 </p>
               </div>
             </ScrollReveal>

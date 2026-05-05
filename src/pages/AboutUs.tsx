@@ -12,6 +12,7 @@ const researchers = [
     desc: 'Multi-item food recognition & recipe discovery via Computer Vision + RAG with Sentence-BERT embeddings.',
     email: 'it22131942@my.sliit.lk',
     initials: 'MU',
+    image: '/images/methusalaumk.png',
     gradient: 'from-teal-400 to-cyan-600',
     glow: 'rgba(20,184,166,0.4)',
     tech: ['OpenCV', 'YOLOv8', 'FAISS', 'RAG'],
@@ -23,6 +24,7 @@ const researchers = [
     desc: 'Predictive micro-nutrient deficiency forecasting using temporal intake analysis and explainable AI interventions.',
     email: 'it22083982@my.sliit.lk',
     initials: 'SM',
+    image: '/images/shahmimtm.png',
     gradient: 'from-emerald-400 to-green-600',
     glow: 'rgba(52,211,153,0.4)',
     tech: ['scikit-learn', 'Random Forest', 'LSTM'],
@@ -34,6 +36,7 @@ const researchers = [
     desc: 'Voice-enabled smart shopping with cross-platform price comparison across eBay, Amazon & Walmart via NLP.',
     email: 'it22117946@my.sliit.lk',
     initials: 'JD',
+    image: '/images/jayasundaradh.png',
     gradient: 'from-violet-400 to-purple-600',
     glow: 'rgba(139,92,246,0.4)',
     tech: ['Gemini AI', 'SERPAPI', 'NLP', 'TF-IDF'],
@@ -45,6 +48,7 @@ const researchers = [
     desc: 'CatBoost-based personalized spoilage prediction incorporating behavioral consumption patterns & feedback loops.',
     email: 'it22339010@my.sliit.lk',
     initials: 'MD',
+    image: '/images/murleshwarand.png',
     gradient: 'from-sky-400 to-blue-600',
     glow: 'rgba(56,189,248,0.4)',
     tech: ['CatBoost', 'Regression', 'MongoDB'],
@@ -57,6 +61,7 @@ const supervisors = [
     title: 'Supervisor',
     dept: 'Faculty of Computing, SLIIT',
     initials: 'LW',
+    image: '/images/lokesha.png',
     gradient: 'from-teal-500 to-teal-700',
     glow: 'rgba(20,184,166,0.35)',
   },
@@ -65,10 +70,53 @@ const supervisors = [
     title: 'Co-Supervisor',
     dept: 'Faculty of Computing, SLIIT',
     initials: 'CK',
+    image: '/images/chathurya.png',
     gradient: 'from-violet-500 to-violet-700',
     glow: 'rgba(139,92,246,0.35)',
   },
 ];
+
+function Avatar({
+  image,
+  initials,
+  gradient,
+  glow,
+  size = 'lg',
+}: {
+  image: string;
+  initials: string;
+  gradient: string;
+  glow: string;
+  size?: 'sm' | 'lg';
+}) {
+  const [imgError, setImgError] = useState(false);
+  const sizeClass = size === 'lg' ? 'w-24 h-24 rounded-2xl text-2xl' : 'w-16 h-16 rounded-2xl text-lg';
+
+  if (!imgError) {
+    return (
+      <div
+        className={`${sizeClass} overflow-hidden shadow-2xl shrink-0`}
+        style={{ boxShadow: `0 8px 32px ${glow}` }}
+      >
+        <img
+          src={image}
+          alt={initials}
+          className="w-full h-full object-cover"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`${sizeClass} bg-gradient-to-br ${gradient} flex items-center justify-center shadow-2xl shrink-0`}
+      style={{ boxShadow: `0 8px 32px ${glow}` }}
+    >
+      <span className="font-outfit font-black text-white">{initials}</span>
+    </div>
+  );
+}
 
 function ResearcherCard({ member, index }: { member: typeof researchers[0]; index: number }) {
   const [hovered, setHovered] = useState(false);
@@ -89,31 +137,35 @@ function ResearcherCard({ member, index }: { member: typeof researchers[0]; inde
           className="rounded-3xl h-full flex flex-col flex-grow"
           style={{ background: 'linear-gradient(135deg, rgba(30,41,59,0.8), rgba(15,23,42,0.95))' }}
         >
-          {/* Top gradient bar */}
           <div className={`h-1.5 w-full bg-gradient-to-r ${member.gradient}`} />
 
-          {/* Glow orb */}
           <motion.div
             className="absolute top-0 right-0 w-32 h-32 rounded-full pointer-events-none"
             animate={{ opacity: hovered ? 0.15 : 0.05 }}
-            style={{ background: `radial-gradient(circle, ${member.glow.replace('0.4', '1')}, transparent)`, filter: 'blur(20px)' }}
+            style={{
+              background: `radial-gradient(circle, ${member.glow.replace('0.4', '1')}, transparent)`,
+              filter: 'blur(20px)',
+            }}
           />
 
           <div className="p-6 flex flex-col h-full flex-grow items-center text-center">
-            {/* Avatar */}
             <motion.div
-              animate={{ scale: hovered ? 1.08 : 1 }}
+              animate={{ scale: hovered ? 1.05 : 1 }}
               transition={{ type: 'spring', stiffness: 300 }}
-              className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${member.gradient} flex items-center justify-center shadow-2xl mb-4 shrink-0`}
-              style={{ boxShadow: `0 8px 32px ${member.glow}` }}
+              className="mb-4 shrink-0"
             >
-              <span className="text-2xl font-outfit font-black text-white">{member.initials}</span>
+              <Avatar
+                image={member.image}
+                initials={member.initials}
+                gradient={member.gradient}
+                glow={member.glow}
+                size="lg"
+              />
             </motion.div>
 
             <h3 className="text-lg font-outfit font-bold text-white mb-1">{member.name}</h3>
             <div className="text-xs font-mono text-teal-500 mb-3">{member.id}</div>
 
-            {/* Role badge */}
             <div
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold mb-3 bg-gradient-to-r ${member.gradient} text-white shrink-0`}
               style={{ opacity: 0.9 }}
@@ -123,7 +175,6 @@ function ResearcherCard({ member, index }: { member: typeof researchers[0]; inde
 
             <p className="text-xs text-slate-500 leading-relaxed mb-4 flex-grow">{member.desc}</p>
 
-            {/* Tech tags */}
             <div className="flex flex-wrap gap-1.5 justify-center mb-5 shrink-0">
               {member.tech.map((t) => (
                 <span
@@ -135,7 +186,6 @@ function ResearcherCard({ member, index }: { member: typeof researchers[0]; inde
               ))}
             </div>
 
-            {/* Email */}
             <a
               href={`mailto:${member.email}`}
               className="flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-teal-400 transition-colors group/email mt-auto shrink-0"
@@ -170,7 +220,10 @@ export function AboutUs() {
             <div className="flex items-center gap-3 mb-10">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
-                style={{ background: 'linear-gradient(135deg, #14b8a6, #06b6d4)', boxShadow: '0 0 20px rgba(20,184,166,0.3)' }}
+                style={{
+                  background: 'linear-gradient(135deg, #14b8a6, #06b6d4)',
+                  boxShadow: '0 0 20px rgba(20,184,166,0.3)',
+                }}
               >
                 <Award className="w-5 h-5 text-white" />
               </div>
@@ -189,12 +242,13 @@ export function AboutUs() {
                     background: 'linear-gradient(135deg, rgba(30,41,59,0.7), rgba(15,23,42,0.9))',
                   }}
                 >
-                  <div
-                    className={`w-16 h-16 shrink-0 rounded-2xl bg-gradient-to-br ${s.gradient} flex items-center justify-center shadow-xl`}
-                    style={{ boxShadow: `0 8px 28px ${s.glow}` }}
-                  >
-                    <span className="text-lg font-outfit font-black text-white">{s.initials}</span>
-                  </div>
+                  <Avatar
+                    image={s.image}
+                    initials={s.initials}
+                    gradient={s.gradient}
+                    glow={s.glow}
+                    size="sm"
+                  />
                   <div>
                     <div
                       className={`text-xs font-bold uppercase tracking-widest mb-1 bg-gradient-to-r ${s.gradient} bg-clip-text text-transparent`}
@@ -216,7 +270,10 @@ export function AboutUs() {
             <div className="flex items-center gap-3 mb-10">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
-                style={{ background: 'linear-gradient(135deg, #818cf8, #a78bfa)', boxShadow: '0 0 20px rgba(139,92,246,0.3)' }}
+                style={{
+                  background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
+                  boxShadow: '0 0 20px rgba(139,92,246,0.3)',
+                }}
               >
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
